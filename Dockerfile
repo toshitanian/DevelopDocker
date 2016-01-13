@@ -68,7 +68,7 @@ ADD emacs-init.el /home/ubuntu/.emacs.d/init.el
 RUN sudo chown -R ubuntu:ubuntu ~/.emacs.d
 RUN zsh -c "~/.pyenv/bin/pyenv global 2.7.9 && curl -fsSkL https://raw.github.com/cask/cask/master/go | ~/.pyenv/shims/python"
 RUN echo 'export PATH="/home/ubuntu/.cask/bin:$PATH"' >> ~/.zshrc
-RUN /bin/zsh -c "cd ~/.emacs.d; ~/.cask/bin/cask init; ~/.cask/bin/cask install"
+RUN /bin/zsh -c "source ~/.zshrc && cd ~/.emacs.d; ~/.cask/bin/cask init; ~/.cask/bin/cask install"
 
 # RUN
 WORKDIR /home/ubuntu
