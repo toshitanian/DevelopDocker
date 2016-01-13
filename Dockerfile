@@ -62,6 +62,11 @@ RUN ls
 ADD .peco.d /home/ubuntu/.peco.d
 RUN echo '. ~/.peco.d/*' >> ~/.zshrc
 
+# emacs
+ADD emacs-init.el /home/ubuntu/.emacs.d/init.el
+RUN sudo chown -R ubuntu:ubuntu ~/.emacs.d
+RUN emacs --daemon
+
 # RUN
 WORKDIR /home/ubuntu
 CMD /bin/zsh
