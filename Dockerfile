@@ -39,16 +39,29 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/too
 # python
 ADD pyenv_rc pyenv_rc
 RUN git clone https://github.com/yyuu/pyenv.git ~/.pyenv && \
-    cd /home/ubuntu/.pyenv/plugins && \
-    git clone git://github.com/yyuu/pyenv-virtualenv.git
+    git clone git://github.com/yyuu/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
 RUN cat pyenv_rc >> $HOME/.zshrc && echo $HOME/.zshrc
-
 RUN sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev
-RUN /home/ubuntu/.pyenv/bin/pyenv install 2.7.9
-RUN /home/ubuntu/.pyenv/bin/pyenv install 3.5.1
+RUN ~/.pyenv/bin/pyenv install 2.7.9
+RUN ~/.pyenv/bin/pyenv install 3.5.1
 
 # ruby
+RUN git clone https://github.com/sstephenson/rbenv.git ~/.rbenv && \
+    git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build && \
+    sudo ~/.rbenv/plugins/ruby-build/install.sh
+ENV PATH /root/.rbenv/bin:$PATH
+RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.zshrc
+RUN echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+RUN ~/.rbenv/bin/rbenv install 2.2.0 
+RUN ~/.rbenv/bin/rbenv global 2.2.0
+RUN ~/.rbenv/bin/rbenv exec gem install bundler
 
+RUN ls
+# peco.d
+ADD .peco.d /home/ubuntu/.peco.d
+RUN echo '. ~/.peco.d/*' >> ~/.zshrc
+
+# RUN
 WORKDIR /home/ubuntu
 CMD /bin/zsh
